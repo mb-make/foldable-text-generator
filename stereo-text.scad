@@ -2,13 +2,13 @@
 text_string = "TEST";
 text_font = "Liberation Serif:style=Bold";
 text_size = 50;
-fold_size = text_size * 0.92;
+fold_size = text_size * 0.90;
 
 material_x = 210;
 material_y = 297;
 
 ligament_width = 5;
-ligament_height = 2;
+ligament_height = 4;
 ligament_spacing = 2;
 ligament_count = (material_x - ligament_width) / (ligament_width + ligament_spacing);
 
@@ -35,6 +35,7 @@ module planar_text()
         material_y/2,
         0
         ])
+    linear_extrude(height=1)
     text(
         text_string,
         size = text_size,
@@ -51,7 +52,7 @@ module fold_line(y)
     {
         translate([
             i * (ligament_width+ligament_spacing),
-            y,
+            y - ligament_height/2,
             0
             ])
         cube([
@@ -86,9 +87,9 @@ color("blue")
     fold_line_bottom();
 }
 
-color("green")
+color("yellow")
 intersection()
 {
-    fold_line_bottom();
     planar_text();
+    fold_line_bottom();
 }
