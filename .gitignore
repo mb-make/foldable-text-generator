@@ -1,0 +1,9 @@
+# Temporary
+*~
+.*.swp
+*.scad.??????
+
+# Outputs
+*.jpg
+*.pdf
+
