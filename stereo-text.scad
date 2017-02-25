@@ -1,11 +1,11 @@
 
+material_x = 210;
+material_y = 297;
+
 text_string = "TEST";
 text_font = "Liberation Serif:style=Bold";
 text_size = 50;
 fold_size = text_size * 0.90;
-
-material_x = 210;
-material_y = 297;
 
 ligament_width = 1;
 ligament_height = 1;
@@ -62,21 +62,10 @@ module fold_line(y)
     }
 }
 
-module fold_line_top()
-{
-    fold_line(material_y / 2 + fold_size);
-}
-
 module fold_line_middle()
 {
     fold_line(material_y / 2);
 }
-
-module fold_line_bottom()
-{
-    fold_line(material_y / 2 - fold_size);
-}
-
 
 module fold_intersection_top()
 {
@@ -138,7 +127,7 @@ module fold_intersection_bottom()
     // move up, right below text
     translate([
         0,
-        material_y / 2 - fold_size,
+        material_y / 2 - fold_size + 0.5,
         0
         ])
     linear_extrude(
@@ -180,10 +169,13 @@ module fold_intersection_bottom()
     }
 }
 
+/*
+color("lightgrey")
+paper_a4();
+*/
+
 projection()
 {
-    //color("lightgrey")
-    //paper_a4();
 
     // cut fold lines into ligament-text union
     difference()
@@ -201,9 +193,6 @@ projection()
             }
         }
 
-        // the three fold lines
-        fold_line_top();
         fold_line_middle();
-        fold_line_bottom();
     }
 }
