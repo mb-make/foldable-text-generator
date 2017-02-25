@@ -29,7 +29,7 @@ module paper_a4()
 
 module planar_text()
 {
-    color("red")
+    color("green")
     translate([
         material_x/2,
         material_y/2,
@@ -87,9 +87,89 @@ color("blue")
     fold_line_bottom();
 }
 
-color("yellow")
-intersection()
+module fold_intersection_top()
 {
-    planar_text();
-    fold_line_bottom();
+    translate([
+        0,
+        material_y / 2,
+        0
+        ])
+    projection()
+    rotate([
+        90,
+        0,
+        0
+        ])
+    intersection()
+    {
+        translate([
+            material_x / 2,
+            0,
+            0
+            ])
+        linear_extrude(height=1)
+        {
+            text(
+                text_string,
+                font = text_font,
+                size = text_size,
+                valign = "top",
+                halign = "center"
+                );
+        }
+        cube([
+            material_x,
+            1,
+            1
+            ]);
+    }
+}
+
+module fold_intersection_bottom()
+{
+    translate([
+        0,
+        material_y / 2 - fold_size,
+        0
+        ])
+    projection()
+    rotate([
+        90,
+        0,
+        0
+        ])
+    intersection()
+    {
+        translate([
+            material_x / 2,
+            0,
+            0
+            ])
+        linear_extrude(height=1)
+        {
+            text(
+                text_string,
+                font = text_font,
+                size = text_size,
+                valign = "bottom",
+                halign = "center"
+                );
+        }
+        cube([
+            material_x,
+            1,
+            1
+            ]);
+    }
+}
+
+color("yellow")
+translate([
+    0,
+    0,
+    2
+    ])
+{
+    fold_intersection_top();
+    fold_intersection_bottom();
 }
