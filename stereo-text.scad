@@ -8,13 +8,12 @@ material_x = 210;
 material_y = 297;
 
 ligament_width = 5;
-ligament_height = 4;
+ligament_height = 1;
 ligament_spacing = 2;
 ligament_count = (material_x - ligament_width) / (ligament_width + ligament_spacing);
 
 module paper_a4()
 {
-    color("lightgrey")
     translate([
         0,
         0,
@@ -29,7 +28,6 @@ module paper_a4()
 
 module planar_text()
 {
-    color("green")
     translate([
         material_x/2,
         material_y/2,
@@ -40,6 +38,7 @@ module planar_text()
         text_string,
         size = text_size,
         font = text_font,
+        $fn = 200,
         valign = "top",
         halign = "center"
     );
@@ -78,30 +77,37 @@ module fold_line_bottom()
     fold_line(material_y / 2 - fold_size);
 }
 
-paper_a4();
-planar_text();
-color("blue")
-{
-    fold_line_top();
-    fold_line_middle();
-    fold_line_bottom();
-}
 
 module fold_intersection_top()
 {
+    // move above text
     translate([
         0,
         material_y / 2,
         0
         ])
+    // rotate back to A4 plane
+    rotate([
+        -90,
+        0,
+        0
+        ])
+    // extrude intersection to rectangles
+    linear_extrude(
+        height = fold_size
+        )
+    // generate projection of cut-out text-top
     projection()
+    // rotate intersection into projection plane (xy)
     rotate([
         90,
         0,
         0
         ])
+    // generate intersection of line and text-top
     intersection()
     {
+        // text, aligned to top, extruded to 3d
         translate([
             material_x / 2,
             0,
@@ -117,6 +123,8 @@ module fold_intersection_top()
                 halign = "center"
                 );
         }
+
+        // straight line (3d)
         cube([
             material_x,
             1,
@@ -127,19 +135,24 @@ module fold_intersection_top()
 
 module fold_intersection_bottom()
 {
+    // move up, right below text
     translate([
         0,
         material_y / 2 - fold_size,
         0
         ])
+    // generate projection
     projection()
+    // rotate into projection plane
     rotate([
         90,
         0,
         0
         ])
+    // generate intersection of text and line
     intersection()
     {
+        // text, aligned to bottom, extruded to 3d
         translate([
             material_x / 2,
             0,
@@ -155,6 +168,7 @@ module fold_intersection_bottom()
                 halign = "center"
                 );
         }
+        // straight line (3d)
         cube([
             material_x,
             1,
@@ -163,13 +177,32 @@ module fold_intersection_bottom()
     }
 }
 
+color("lightgrey")
+paper_a4();
+
+color("blue")
+{
+    fold_line_top();
+    fold_line_middle();
+    fold_line_bottom();
+}
+
+union()
+{
+    color("green")
+    planar_text();
+
+    color("yellow")
+    fold_intersection_top();
+}
+
 color("yellow")
+projection()
 translate([
     0,
     0,
-    2
+    1
     ])
 {
-    fold_intersection_top();
     fold_intersection_bottom();
 }
