@@ -3,6 +3,9 @@
 .*.swp
 *.scad.??????
 
+# Binary
+*.pyc
+
 # Outputs
 *.jpg
 *.pdf
