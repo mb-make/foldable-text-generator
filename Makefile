@@ -1,8 +1,11 @@
 
-all: stereo-text.svg
+all: projection.svg
 
-%.svg: %.scad
+projection.svg: projection.scad stereo-text.scad
 	openscad $< -o $@
+
+#%.svg: %.scad
+#	openscad $< -o $@
 
 clean:
 	rm -f *.svg

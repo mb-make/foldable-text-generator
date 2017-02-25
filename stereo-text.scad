@@ -127,13 +127,20 @@ module fold_intersection_bottom()
     // move up, right below text
     translate([
         0,
-        material_y / 2 - fold_size + 0.5,
+        material_y / 2 - fold_size - 1,
         0
         ])
+    // rotate back into paper plane
+    rotate([
+        -90,
+        0,
+        0
+        ])
+    // make 3d again
     linear_extrude(
-        height = 1
+        height = 2
         )
-    // generate projection
+    // get rid of font character curves
     projection()
     // rotate into projection plane
     rotate([
@@ -169,14 +176,8 @@ module fold_intersection_bottom()
     }
 }
 
-/*
-color("lightgrey")
-paper_a4();
-*/
-
-projection()
+module stereo_text()
 {
-
     // cut fold lines into ligament-text union
     difference()
     {
@@ -196,3 +197,8 @@ projection()
         fold_line_middle();
     }
 }
+
+color("lightgrey")
+paper_a4();
+
+stereo_text();
