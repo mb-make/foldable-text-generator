@@ -7,9 +7,9 @@ fold_size = text_size * 0.90;
 material_x = 210;
 material_y = 297;
 
-ligament_width = 5;
+ligament_width = 1;
 ligament_height = 1;
-ligament_spacing = 2;
+ligament_spacing = 1;
 ligament_count = (material_x - ligament_width) / (ligament_width + ligament_spacing);
 
 module paper_a4()
@@ -17,7 +17,7 @@ module paper_a4()
     translate([
         0,
         0,
-        -1
+        -1.5
         ])
     cube([
         material_x,
@@ -141,6 +141,9 @@ module fold_intersection_bottom()
         material_y / 2 - fold_size,
         0
         ])
+    linear_extrude(
+        height = 1
+        )
     // generate projection
     projection()
     // rotate into projection plane
@@ -177,32 +180,30 @@ module fold_intersection_bottom()
     }
 }
 
-color("lightgrey")
-paper_a4();
-
-color("blue")
-{
-    fold_line_top();
-    fold_line_middle();
-    fold_line_bottom();
-}
-
-union()
-{
-    color("green")
-    planar_text();
-
-    color("yellow")
-    fold_intersection_top();
-}
-
-color("yellow")
 projection()
-translate([
-    0,
-    0,
-    1
-    ])
 {
-    fold_intersection_bottom();
+    //color("lightgrey")
+    //paper_a4();
+
+    // cut fold lines into ligament-text union
+    difference()
+    {
+        // make a union of text and ligaments
+        union()
+        {
+            color("green")
+            planar_text();
+
+            color("yellow")
+            {
+                fold_intersection_top();
+                fold_intersection_bottom();
+            }
+        }
+
+        // the three fold lines
+        fold_line_top();
+        fold_line_middle();
+        fold_line_bottom();
+    }
 }
