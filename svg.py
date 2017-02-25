@@ -35,3 +35,14 @@ class SVG:
 
     def save_as(this, filename):
         open(filename, "w").write(str(this))
+
+    #
+    # Split the one mega-path, which OpenSCAD exports,
+    # into connected paths
+    #
+    def break_apart(this):
+        # already several paths
+        if (len(this.paths) > 1):
+            return
+
+        this.paths = this.paths[0].split()
