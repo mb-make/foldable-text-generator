@@ -1,6 +1,6 @@
 
-use <stereo-text.scad>;
+use <model.scad>;
 
 projection()
-stereo_text();
+text_model();
 

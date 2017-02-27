@@ -176,7 +176,7 @@ module fold_intersection_bottom()
     }
 }
 
-module stereo_text()
+module text_model()
 {
     // cut fold lines into ligament-text union
     difference()
@@ -201,4 +201,4 @@ module stereo_text()
 color("lightgrey")
 paper_a4();
 
-stereo_text();
+text_model();
