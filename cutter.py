@@ -29,6 +29,9 @@ print "Split "+str(before)+" path into "+str(len(svg.elements))+" paths."
 
 # replace A4 page path by rect
 # not to interfer with min/max code below
+left_x = 0
+right_x = 297
+middle_y = -210/2
 try:
     # detect A4 landscape
     if  svg.elements[0].d.segments[0].x == 297.0 \
@@ -90,6 +93,15 @@ for i in range(len(svg.elements)):
 
                 previous_x = segment.x
                 previous_y = segment.y
+
+# add fold line in the middle
+cut = Path()
+cut.d.segments = [
+    Segment('M', left_x, middle_y),
+    Segment('L', right_x, middle_y)
+    ]
+cut.epilogue = ' stroke="red" stroke-dasharray="0.5,0.5"/>'
+svg.elements.append(cut)
 
 # export SVG
 svg.save_as(filename_save)
