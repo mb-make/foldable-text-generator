@@ -8,7 +8,7 @@
 all: cutfile
 
 cutfile: cuts
-cuts: cuts-red.svg
+cuts: cuts-hairline.svg
 
 projection: projection.svg
 projection.svg: projection.scad model.scad settings.scad
@@ -19,6 +19,9 @@ cuts-dashed.svg: projection.svg
 
 cuts-red.svg: cuts-dashed.svg
 	cat $< | replace "stroke=\"black\" fill=\"lightgray\"" "stroke=\"red\" fill=\"none\"" > $@
+
+cuts-hairline.svg: cuts-red.svg
+	cat $< | sed -e "s/stroke-width=\"\([0-9]*\.[0-9]*\)\"//g" -e "s/stroke=\"red\"/stroke=\"red\" stroke-width=\"0.1\"/g" > $@
 
 clean:
 	rm -f *.svg *.pyc *~
