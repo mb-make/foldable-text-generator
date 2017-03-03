@@ -1,12 +1,19 @@
 
-all: projection.svg
+all: cutfile
 
-projection.svg: projection.scad model.scad
+cutfile: cuts
+cuts: cuts-red.svg
+
+projection: projection.svg
+projection.svg: projection.scad model.scad settings.scad
 	openscad $< -o $@
 
-#%.svg: %.scad
-#	openscad $< -o $@
+cuts-dashed.svg: projection.svg
+	./cutter.py $< $@
+
+cuts-red.svg: cuts-dashed.svg
+	cat $< | replace "stroke=\"black\" fill=\"lightgray\"" "stroke=\"red\" fill=\"none\"" > $@
 
 clean:
-	rm -f *.svg *.pyc
+	rm -f *.svg *.pyc *~
 
