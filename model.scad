@@ -1,18 +1,7 @@
 
-material_x = 210;
-material_y = 297;
+include <settings.scad>;
 
-text_string = "TEST";
-text_font = "Liberation Serif:style=Bold";
-text_size = 50;
-fold_size = text_size * 0.90;
-
-ligament_width = 1;
-ligament_height = 1;
-ligament_spacing = 1;
-ligament_count = (material_x - ligament_width) / (ligament_width + ligament_spacing);
-
-module paper_a4()
+module paper_a4_landscape()
 {
     translate([
         0,
@@ -20,8 +9,8 @@ module paper_a4()
         -1.5
         ])
     cube([
-        material_x,
-        material_y,
+        a4_landscape_x,
+        a4_landscape_y,
         1
         ]);
 }
@@ -42,29 +31,6 @@ module planar_text()
         valign = "top",
         halign = "center"
     );
-}
-
-module fold_line(y)
-{
-    // middle folding ligaments
-    for (i = [0:ligament_count])
-    {
-        translate([
-            i * (ligament_width+ligament_spacing),
-            y - ligament_height/2,
-            0
-            ])
-        cube([
-            ligament_width,
-            ligament_height,
-            1
-            ]);
-    }
-}
-
-module fold_line_middle()
-{
-    fold_line(material_y / 2);
 }
 
 module fold_intersection_top()
@@ -178,27 +144,21 @@ module fold_intersection_bottom()
 
 module text_model()
 {
-    // cut fold lines into ligament-text union
-    difference()
+    // make a union of text and ligaments
+    union()
     {
-        // make a union of text and ligaments
-        union()
+        color("green")
+        planar_text();
+
+        color("yellow")
         {
-            color("green")
-            planar_text();
-
-            color("yellow")
-            {
-                fold_intersection_top();
-                fold_intersection_bottom();
-            }
+            fold_intersection_top();
+            fold_intersection_bottom();
         }
-
-        fold_line_middle();
     }
 }
 
 color("lightgrey")
-paper_a4();
+paper_a4_landscape();
 
 text_model();
