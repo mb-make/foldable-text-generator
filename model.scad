@@ -1,3 +1,9 @@
+/**
+ * Script to create a foldable text 3d model
+ *
+ * Author: Matthias Bock <mail@matthiasbock.net>
+ * License: GNU GPLv3
+ */
 
 include <settings.scad>;
 

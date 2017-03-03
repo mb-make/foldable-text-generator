@@ -1,3 +1,9 @@
+#
+# Makefile for automated lasercut file generation
+#
+# Author: Matthias Bock <mail@matthiasbock.net>
+# License: GNU GPLv3
+#
 
 all: cutfile
 

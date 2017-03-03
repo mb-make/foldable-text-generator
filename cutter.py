@@ -3,6 +3,9 @@
 # Script to insert cuts into foldable text
 # graphic (SVG) exported from OpenSCAD
 #
+# Author: Matthias Bock <mail@matthiasbock.net>
+# License: GNU GPLv3
+#
 
 from sys import argv
 from utils.svg import *
