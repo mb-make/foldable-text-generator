@@ -25,7 +25,7 @@ module planar_text()
 {
     translate([
         material_x/2,
-        material_y/2,
+        0,
         0
         ])
     linear_extrude(height=1)
@@ -41,12 +41,6 @@ module planar_text()
 
 module fold_intersection_top()
 {
-    // move above text
-    translate([
-        0,
-        material_y / 2,
-        0
-        ])
     // rotate back to A4 plane
     rotate([
         -90,
@@ -96,12 +90,6 @@ module fold_intersection_top()
 
 module fold_intersection_bottom()
 {
-    // move up, right below text
-    translate([
-        0,
-        material_y / 2 - fold_size - 1,
-        0
-        ])
     // rotate back into paper plane
     rotate([
         -90,
@@ -154,11 +142,29 @@ module text_model()
     union()
     {
         color("green")
+        translate([
+            0,
+            material_y/2,
+            0
+            ])
         planar_text();
 
         color("yellow")
         {
+            // move above text
+            translate([
+                0,
+                material_y / 2,
+                0
+                ])
             fold_intersection_top();
+
+            // move up, right below text
+            translate([
+                0,
+                material_y / 2 - fold_size - 1,
+                0
+                ])
             fold_intersection_bottom();
         }
     }

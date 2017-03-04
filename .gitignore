@@ -7,7 +7,6 @@
 *.pyc
 
 # Outputs
-*.jpg
 *.pdf
 *.svg
 
